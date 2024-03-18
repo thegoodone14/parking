@@ -23,7 +23,6 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-<<<<<<< Updated upstream
 Route::get('/menu-administrateur',function (){
     return 'admin';
 
@@ -49,7 +48,6 @@ Route::get('/menu-administrateur/liste-attente-utilisateurs',function (){
 
 });
 
-=======
 route::get('/menu-utilisateur', function (){
     return 'Bonjour';
 });
@@ -69,4 +67,3 @@ route::get('/menu-utilisateur/liste-attente', function (){
 route::get('/menu-utilisateur/parametre', function (){
     return 'Bonjour';
 });
->>>>>>> Stashed changes
