@@ -12,12 +12,28 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
-            <div>
-                <x-label for="name" :value="__('Name')" />
-
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+           <!-- Champ Prénom -->
+            <div class="mb-3">
+                <label for="prenom" class="form-label">{{ __('Prénom') }}</label>
+                <input id="prenom" type="text" class="form-control @error('prenom') is-invalid @enderror" name="prenom" value="{{ old('prenom') }}" required autocomplete="prenom" autofocus>
+                @error('prenom')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
+
+            <!-- Champ Nom -->
+            <div class="mb-3">
+                <label for="nom" class="form-label">{{ __('Nom') }}</label>
+                <input id="nom" type="text" class="form-control @error('nom') is-invalid @enderror" name="nom" value="{{ old('nom') }}" required autocomplete="nom">
+                @error('nom')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
 
             <!-- Email Address -->
             <div class="mt-4">
