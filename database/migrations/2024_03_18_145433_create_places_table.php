@@ -14,8 +14,9 @@ class CreatePlacesTable extends Migration
     public function up()
     {
         Schema::create('places', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('ID_Place'); // Laravel utilise la convention de nommage id pour les clés primaires
+            $table->string('Numero');
+            $table->timestamps(); // Optionnel: Si vous souhaitez enregistrer la date de création/mise à jour des enregistrements
         });
     }
 
