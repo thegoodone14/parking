@@ -33,3 +33,4 @@ class CreateReservationsTable extends Migration
         Schema::dropIfExists('reservations');
     }
 }
+// SQLSTATE[HY000]: General error: 3734 Failed to add the foreign key constraint. Missing column 'id' for constraint 'reservations_id_place_foreign' in the referenced table 'places' (SQL: alter table `reservations` add constraint `reservations_id_place_foreign` foreign key (`ID_Place`) references `places` (`id`))
