@@ -22,3 +22,29 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::get('/menu-administrateur',function (){
+    return 'admin';
+
+});
+
+Route::get('/menu-administrateur/utilisateurs',function (){
+    return 'liste utilisateurs';
+
+});
+
+Route::get('/menu-administrateur/places',function (){
+    return 'les places';
+
+});
+
+Route::get('/menu-administrateur/historique-place',function (){
+    return 'historique des places';
+
+});
+
+Route::get('/menu-administrateur/liste-attente-utilisateurs',function (){
+    return 'liste d attente';
+
+});
+
