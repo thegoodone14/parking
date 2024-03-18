@@ -23,6 +23,10 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::resource('places', PlaceController::class);
+
+Route::resource('reservations', ReservationController::class);
+
 Route::get('/menu-administrateur',function (){
     return 'admin';
 
