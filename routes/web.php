@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\ReservationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +26,11 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::resource('places', PlaceController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('places', PlaceController::class);
+    Route::resource('reservations', ReservationController::class);
+    // Toutes les autres routes qui nécessitent une authentification
 
-Route::resource('reservations', ReservationController::class);
 
 Route::get('/menu-administrateur',function (){
     return 'admin';
@@ -70,4 +75,6 @@ route::get('/menu-utilisateur/liste-attente', function (){
 
 route::get('/menu-utilisateur/parametre', function (){
     return 'Bonjour';
+});
+
 });
