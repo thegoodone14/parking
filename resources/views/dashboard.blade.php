@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <div class="container text-center">
     <h1 class="my-4">PARKING</h1>
 
