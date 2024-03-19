@@ -18,9 +18,6 @@
         <div class="col-md-6 mb-3">
             <a href="{{ route('waitlist') }}" class="btn btn-primary btn-lg btn-block">Liste d'attente</a>
         </div>
-        <div class="col-md-6 mb-3">
-            <a href="{{ route('settings') }}" class="btn btn-primary btn-lg btn-block">Paramètres</a>
-        </div>
     </div>
 </div>
 @endsection
