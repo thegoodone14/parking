@@ -66,4 +66,7 @@ class ReservationController extends Controller
 
         return redirect()->route('reservations.index')->with('success', 'Réservation supprimée avec succès.');
     }
+
+    // Logique pour obtenir les données de la liste d'attente
+    return view('reservations.waitlist', compact('data'));
 }
