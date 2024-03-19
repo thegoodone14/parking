@@ -20,7 +20,7 @@ class EnsureUserIsAdmin
         if (!Auth::check() || Auth::user()->statut != 1) {
             // Si l'utilisateur n'est pas connecté ou si ce n'est pas un admin,
             // redirigez-le vers la page d'accueil ou la page de connexion par exemple.
-            return redirect('home')->with('error', 'Vous n'avez pas les permissions pour accéder à cette ressource.');
+            return redirect('home')->with('error', 'Vous navez pas les permissions pour accéder à cette ressource.');
         }
 
         return $next($request);

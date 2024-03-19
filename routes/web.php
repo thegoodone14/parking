@@ -80,7 +80,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         route::get('/menu-utilisateur/parametre', function (){
             return 'Bonjour';
     });
-
 });
 
 
+});
