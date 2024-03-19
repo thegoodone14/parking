@@ -26,55 +26,61 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::resource('places', PlaceController::class);
-    Route::resource('reservations', ReservationController::class);
-    // Toutes les autres routes qui nécessitent une authentification
+
+    Route::get('/menu-administrateur',function (){
+        return 'admin';
+
+    });
+
+    Route::get('/menu-administrateur/utilisateurs',function (){
+        return 'liste utilisateurs';
+
+    });
+
+    Route::get('/menu-administrateur/places',function (){
+        return 'les places';
+
+    });
+
+    Route::get('/menu-administrateur/historique-place',function (){
+        return 'historique des places';
+
+    });
+
+    Route::get('/menu-administrateur/liste-attente-utilisateurs',function (){
+        return 'liste d attente';
+
+    });
 
 
-Route::get('/menu-administrateur',function (){
-    return 'admin';
+
+    Route::middleware(['auth'])->group(function () {
+        
+        Route::resource('reservations', ReservationController::class);
+        // Toutes les autres routes qui nécessitent une authentification
+
+        route::get('/menu-utilisateur', function (){
+            return 'Bonjour';
+        });
+
+        route::get('/menu-utilisateur/reservation-en-cours', function (){
+            return 'Bonjour';
+        });
+
+        route::get('/menu-utilisateur/nouvelle-reservation', function (){
+            return 'Bonjour';
+        });
+
+        route::get('/menu-utilisateur/liste-attente', function (){
+            return 'Bonjour';
+        });
+
+        route::get('/menu-utilisateur/parametre', function (){
+            return 'Bonjour';
+    });
 
 });
 
-Route::get('/menu-administrateur/utilisateurs',function (){
-    return 'liste utilisateurs';
 
-});
-
-Route::get('/menu-administrateur/places',function (){
-    return 'les places';
-
-});
-
-Route::get('/menu-administrateur/historique-place',function (){
-    return 'historique des places';
-
-});
-
-Route::get('/menu-administrateur/liste-attente-utilisateurs',function (){
-    return 'liste d attente';
-
-});
-
-route::get('/menu-utilisateur', function (){
-    return 'Bonjour';
-});
-
-route::get('/menu-utilisateur/reservation-en-cours', function (){
-    return 'Bonjour';
-});
-
-route::get('/menu-utilisateur/nouvelle-reservation', function (){
-    return 'Bonjour';
-});
-
-route::get('/menu-utilisateur/liste-attente', function (){
-    return 'Bonjour';
-});
-
-route::get('/menu-utilisateur/parametre', function (){
-    return 'Bonjour';
-});
-
-});
