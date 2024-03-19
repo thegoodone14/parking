@@ -35,22 +35,22 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     });
 
     Route::get('/menu-administrateur/utilisateurs',function (){
-        return 'liste utilisateurs';
+        return view('liste_utilisateurs');
 
     });
 
     Route::get('/menu-administrateur/places',function (){
-        return 'les places';
+        return View('les_places');
 
     });
 
     Route::get('/menu-administrateur/historique-place',function (){
-        return 'historique des places';
+        return view('historique_des_places');
 
     });
 
     Route::get('/menu-administrateur/liste-attente-utilisateurs',function (){
-        return 'liste d attente';
+        return View('liste_d_attente');
 
     });
 
@@ -62,23 +62,23 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         // Toutes les autres routes qui nécessitent une authentification
 
         route::get('/menu-utilisateur', function (){
-            return 'Bonjour';
+            return View('menu_utilisateur');
         });
 
         route::get('/menu-utilisateur/reservation-en-cours', function (){
-            return 'Bonjour';
+            return View('reservation_en_cours');
         });
 
         route::get('/menu-utilisateur/nouvelle-reservation', function (){
-            return 'Bonjour';
+            return View('nouvelle_reservation');
         });
 
         route::get('/menu-utilisateur/liste-attente', function (){
-            return 'Bonjour';
+            return View('liste_attente');
         });
 
         route::get('/menu-utilisateur/parametre', function (){
-            return 'Bonjour';
+            return View('parametre');
     });
 });
 
