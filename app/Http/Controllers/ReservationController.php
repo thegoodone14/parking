@@ -68,5 +68,7 @@ class ReservationController extends Controller
     }
 
     // Logique pour obtenir les données de la liste d'attente
-    return view('reservations.waitlist', compact('data'));
+    public function waitlist() {
+        return view('reservations.waitlist', compact('data'));
+    }
 }
