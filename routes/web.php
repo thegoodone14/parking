@@ -67,10 +67,12 @@ require __DIR__.'/auth.php';
 
         route::get('/menu-utilisateur/reservation-en-cours', function (){
             return View('reservation_en_cours');
+
         });
 
         route::get('/menu-utilisateur/nouvelle-reservation', function (){
             return View('nouvelle_reservation');
+            Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
         });
 
         Route::get('/waitlist', [ReservationController::class, 'waitlist'])->name('waitlist');

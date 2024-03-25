@@ -6,7 +6,12 @@ use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
-     // Afficher les réservations de l'utilisateur connecté
+    // Créer une place 
+    public function create()
+    {
+        return view('reservations.create');
+    }
+    // Afficher les réservations de l'utilisateur connecté
      public function index()
      {
          $reservations = auth()->user()->reservations;
@@ -28,6 +33,7 @@ class ReservationController extends Controller
  
          return redirect()->route('reservations.index')->with('success', 'Réservation ajoutée avec succès.');
      }
+    
      // Afficher une réservation spécifique
     public function show($id)
     {
