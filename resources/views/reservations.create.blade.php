@@ -1,6 +1,7 @@
+@extends('layouts.app')
 
-
-
+@section('content')
+<div class="container">
     <h1>Demande de Nouvelle Réservation</h1>
     
     <!-- Formulaire de création de réservation -->
@@ -20,4 +21,4 @@
         <button type="submit" class="btn btn-primary">Envoyer</button>
     </form>
 </div>
-
+@endsection

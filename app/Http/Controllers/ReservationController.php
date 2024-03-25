@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
+    public function __construct()
+    {
+    }
+
     // Créer une place 
     public function create()
     {
