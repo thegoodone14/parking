@@ -27,8 +27,18 @@ class ReservationController extends Controller
      // Enregistrer une nouvelle réservation dans la base de données
      public function store(Request $request)
      {
-        // Récupérer l'ID de l'utilisateur authentifié
+            // Récupérer l'ID de l'utilisateur authentifié
         $userID = auth()->user()->id;
+
+        // Récupérer un ID_Place disponible
+        $availablePlace = Place::whereDoesntHave('reservations', function ($query) {
+            $query->where('Date_heure_expiration', '>', now());
+        })->first();
+
+        if (!$availablePlace) {
+            // Aucune place disponible
+            return redirect()->route('reservations.index')->with('error', 'Aucune place disponible pour effectuer la réservation.');
+        }
 
         // Calculer la date et l'heure actuelles
         $currentDateTime = now();
@@ -36,12 +46,12 @@ class ReservationController extends Controller
         // Calculer la date et l'heure d'expiration (1 jour à partir de maintenant)
         $expirationDateTime = $currentDateTime->copy()->addDay();
 
-        // Créer une nouvelle réservation avec les données par défaut
+        // Créer une nouvelle réservation avec l'ID de la place disponible
         $reservation = new Reservation();
         $reservation->Date_heure_reservation = $currentDateTime;
         $reservation->Date_heure_expiration = $expirationDateTime;
         $reservation->ID_user = $userID;
-        $reservation->ID_Place = $request->input('ID_Place'); // Vous devez encore récupérer l'ID de la place à partir de la demande
+        $reservation->ID_Place = $availablePlace->id;
         $reservation->save();
 
         // Rediriger avec un message de succès
