@@ -58,6 +58,8 @@ require __DIR__.'/auth.php';
 
    // Route::middleware(['auth'])->group(function () {
         
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    
         Route::resource('reservations', ReservationController::class);
         // Toutes les autres routes qui nécessitent une authentification
 
@@ -72,7 +74,6 @@ require __DIR__.'/auth.php';
 
         route::get('/menu-utilisateur/nouvelle-reservation', function (){
             return View('nouvelle_reservation');
-            Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
         });
 
         Route::get('/waitlist', [ReservationController::class, 'waitlist'])->name('waitlist');
