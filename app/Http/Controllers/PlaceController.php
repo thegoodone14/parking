@@ -22,13 +22,28 @@ class PlaceController extends Controller
     // Enregistrer une nouvelle place dans la base de données
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'Numero' => 'required|unique:places|max:255',
+        // Valider les données du formulaire
+    $validatedData = $request->validate([
+        'user_id' => 'required|exists:users,id',
+    ]);
+
+    // Vérifier s'il existe une place disponible
+    $place = Place::first();
+
+    // Créer une nouvelle réservation si une place est disponible
+    if ($place) {
+        // Créer une nouvelle réservation avec l'ID de l'utilisateur et l'ID de la place
+        Reservation::create([
+            'user_id' => $validatedData['user_id'],
+            'place_id' => $place->id,
         ]);
 
-        $place = Place::create($validatedData);
-
-        return redirect()->route('places.index')->with('success', 'Place ajoutée avec succès.');
+        // Rediriger avec un message de succès
+        return redirect()->route('reservations.index')->with('success', 'Réservation effectuée avec succès.');
+    } else {
+        // Rediriger avec un message d'erreur
+        return redirect()->back()->with('error', 'Aucune place disponible pour effectuer la réservation.');
+    }
     }
     // Afficher le formulaire pour éditer une place existante
     public function edit($id)
