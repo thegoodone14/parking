@@ -25,17 +25,26 @@ class ReservationController extends Controller
      // Enregistrer une nouvelle réservation dans la base de données
      public function store(Request $request)
      {
-         $validatedData = $request->validate([
-             'Date_heure_reservation' => 'required|date',
-             'Date_heure_expiration' => 'required|date|after:Date_heure_reservation',
-             'ID_Place' => 'required|exists:places,ID_Place',
-         ]);
- 
-         $reservation = new Reservation($validatedData);
-         $reservation->ID_user = auth()->user()->id;
-         $reservation->save();
- 
-         return redirect()->route('reservations.index')->with('success', 'Réservation ajoutée avec succès.');
+        // Récupérer l'ID de l'utilisateur authentifié
+        $userID = auth()->user()->id;
+
+        // Calculer la date et l'heure actuelles
+        $currentDateTime = now();
+
+        // Calculer la date et l'heure d'expiration (1 jour à partir de maintenant)
+        $expirationDateTime = $currentDateTime->copy()->addDay();
+
+        // Créer une nouvelle réservation avec les données par défaut
+        $reservation = new Reservation();
+        $reservation->Date_heure_reservation = $currentDateTime;
+        $reservation->Date_heure_expiration = $expirationDateTime;
+        $reservation->ID_user = $userID;
+        $reservation->ID_Place = $request->input('ID_Place'); // Vous devez encore récupérer l'ID de la place à partir de la demande
+        $reservation->save();
+
+        // Rediriger avec un message de succès
+        return redirect()->route('reservations.index')->with('success', 'Réservation ajoutée avec succès.');
+
      }
     
      // Afficher une réservation spécifique
