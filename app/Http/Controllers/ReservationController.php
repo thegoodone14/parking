@@ -24,6 +24,7 @@ class ReservationController extends Controller
          return view('reservations.index', compact('reservations'));
      }
  
+     
      // Enregistrer une nouvelle réservation dans la base de données
      public function store(Request $request)
      {
