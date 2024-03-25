@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-//Route::middleware(['auth', 'is_admin'])->group(function () {
+Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::resource('places', PlaceController::class);
 
     Route::get('/menu-administrateur',function (){
@@ -54,12 +54,12 @@ require __DIR__.'/auth.php';
 
     });
 
-
+});
 
    // Route::middleware(['auth'])->group(function () {
         
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-    
+
         Route::resource('reservations', ReservationController::class);
         // Toutes les autres routes qui nécessitent une authentification
 

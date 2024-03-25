@@ -1,23 +1,21 @@
+@extends('layouts.app')
 
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Demander une nouvelle réservation</div>
 
-
-    <h1>Demande de Nouvelle Réservation</h1>
-    
-    <!-- Formulaire de création de réservation -->
-    <form action="{{ route('reservations.store') }}" method="POST">
-        @csrf
-        <!-- Champs du formulaire (par exemple) -->
-        <div class="form-group">
-            <label for="date">Date de la réservation</label>
-            <input type="date" class="form-control" id="date" name="date">
+                <div class="card-body">
+                    <p>Cliquez sur le bouton ci-dessous pour lancer une demande de réservation :</p>
+                    <form action="{{ route('reservations.store') }}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Demander une réservation</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="time">Heure de la réservation</label>
-            <input type="time" class="form-control" id="time" name="time">
-        </div>
-        <!-- Autres champs du formulaire -->
-        
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-    </form>
+    </div>
 </div>
-
+@endsection
