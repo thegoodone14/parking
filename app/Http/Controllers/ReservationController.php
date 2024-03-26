@@ -32,10 +32,12 @@ class ReservationController extends Controller
         $userID = auth()->user()->id;
 
         // Récupérer un ID_Place disponible
-        $availablePlace = Place::whereDoesntHave('reservations', function ($query) {
-            $query->where('Date_heure_expiration', '<', now())
-                  ->orWhereNull('Date_heure_expiration');
-        })->first();
+        $availablePlace = Place::whereNotExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('reservations')
+                  ->whereColumn('reservations.ID_Place', 'places.id')
+                  ->orWhere('reservations.Date_heure_expiration', '<', now());
+                })->first();
 
         if (!$availablePlace) {
             // Aucune place disponible
