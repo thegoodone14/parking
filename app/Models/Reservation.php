@@ -9,6 +9,16 @@ class Reservation extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'ID_reservation',
+        'Date_heure_reservation',
+        'Date_heure_expiration',
+        'ID_Place',
+        'ID_user',
+        'created_at',
+        'updated_at',
+    ];
+
     // Définition de la table si elle n'utilise pas le nom par défaut
     protected $table = 'reservations';
 

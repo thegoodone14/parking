@@ -7,8 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Place extends Model
 {
+
     use HasFactory;
     
+    protected $fillable = [
+        'ID_Place',
+        'Numero',
+        'created_at',
+        'updated_at',
+    ];
+
      // Définition de la table si elle n'utilise pas le nom par défaut
      protected $table = 'places';
 
