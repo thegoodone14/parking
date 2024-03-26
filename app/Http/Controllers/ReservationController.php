@@ -18,11 +18,17 @@ class ReservationController extends Controller
     {
         return view('reservations.create');
     }
+   
     // Afficher les réservations de l'utilisateur connecté
      public function index()
      {
-         $reservations = auth()->user()->reservations;
-         return view('reservations.index', compact('reservations'));
+         // Récupérer l'utilisateur authentifié
+    $user = Auth::user();
+
+    // Récupérer les réservations de l'utilisateur
+    $reservations = Reservation::where('ID_user', $user->id)->get();
+
+    return view('reservations.index', compact('reservations'));
      }
  
      
