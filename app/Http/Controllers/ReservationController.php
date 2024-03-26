@@ -36,14 +36,9 @@ class ReservationController extends Controller
         $availablePlace = Place::whereNotExists(function ($query) {
             $query->select(DB::raw(1))
                   ->from('reservations')
-<<<<<<< HEAD
-                  ->whereColumn('reservations.ID_Place', 'places.ID_Place');
-                })->first();
-=======
-                  ->whereColumn('reservations.ID_Place', 'places.id')
+                  ->whereColumn('reservations.ID_Place', 'places.ID_Place')
                   ->orWhere('reservations.Date_heure_expiration', '<', now());
-                })->value('id');
->>>>>>> 641650a762babb9e45775dd3150da2b11f5567ae
+                })->value('ID_Place');
 
         if (!$availablePlace) {
             // Aucune place disponible
