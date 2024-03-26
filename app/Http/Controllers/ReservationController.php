@@ -23,13 +23,13 @@ class ReservationController extends Controller
     // Afficher les réservations de l'utilisateur connecté
      public function index()
      {
-         // Récupérer l'utilisateur authentifié
-    $user = Auth::user();
+                // Récupérer l'utilisateur authentifié
+            $user = Auth::user();
 
-    // Récupérer les réservations de l'utilisateur
-    $reservations = Reservation::where('ID_user', $user->id)->get();
+            // Récupérer les réservations de l'utilisateur
+            $reservations = Reservation::where('ID_user', $user->id)->get();
 
-    return view('reservations.index', compact('reservations'));
+            return view('reservations.index', compact('reservations'));
      }
  
      
@@ -39,9 +39,9 @@ class ReservationController extends Controller
             // Récupérer l'ID de l'utilisateur authentifié
         $userID = auth()->user()->id;
 
-        
-        
-        
+            // Supprimer les réservations antérieures à la date actuelle
+        Reservation::where('Date_heure_expiration', '<', now())->delete();
+            
         // Récupérer un ID_Place disponible
         $availablePlace = Place::whereNotExists(function ($query) {
             $query->select(DB::raw(1))
