@@ -57,7 +57,6 @@ class ReservationController extends Controller
 
         // Rediriger avec un message de succès
         return redirect()->route('reservations.index')->with('success', 'Réservation ajoutée avec succès.');
-
      }
     
      // Afficher une réservation spécifique
