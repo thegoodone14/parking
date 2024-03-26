@@ -56,7 +56,7 @@ class ReservationController extends Controller
         $reservation->Date_heure_reservation = $currentDateTime;
         $reservation->Date_heure_expiration = $expirationDateTime;
         $reservation->ID_user = $userID;
-        $reservation->ID_Place = $availablePlace->id;
+        $reservation->ID_Place = $availablePlace;
         $reservation->save();
 
         // Rediriger avec un message de succès
