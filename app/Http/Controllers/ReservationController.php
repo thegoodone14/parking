@@ -38,7 +38,7 @@ class ReservationController extends Controller
                   ->from('reservations')
                   ->whereColumn('reservations.ID_Place', 'places.id')
                   ->orWhere('reservations.Date_heure_expiration', '<', now());
-                })->first();
+                })->value('id');
 
         if (!$availablePlace) {
             // Aucune place disponible
