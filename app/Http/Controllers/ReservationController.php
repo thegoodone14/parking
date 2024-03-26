@@ -42,7 +42,7 @@ class ReservationController extends Controller
 
         if (!$availablePlace) {
             // Aucune place disponible
-            return redirect()->route('reservations.index')->with('error', 'Aucune place disponible pour effectuer la réservation.');
+            return ('error, Aucune place disponible pour effectuer la réservation.');
         }
 
         // Calculer la date et l'heure actuelles
@@ -60,7 +60,7 @@ class ReservationController extends Controller
         $reservation->save();
 
         // Rediriger avec un message de succès
-        return redirect()->route('reservations.index')->with('success', 'Réservation ajoutée avec succès.');
+        return ('success, Réservation ajoutée avec succès.');
      }
     
      // Afficher une réservation spécifique
