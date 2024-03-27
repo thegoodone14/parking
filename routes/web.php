@@ -77,6 +77,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         });
 
         Route::get('/waitlist', [ReservationController::class, 'waitlist'])->name('waitlist');
+        Route::get('/reservations/waitlist', [ReservationController::class, 'waitlist'])->name('reservations.waitlist');
 
 
         route::get('/menu-utilisateur/parametre', function (){
