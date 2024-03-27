@@ -54,6 +54,11 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+         // Après une authentification réussie, déterminez le rôle de l'utilisateur.
+    $user = Auth::user();
+    if ($user->isAdmin()) { // Suppose que vous avez une méthode isAdmin() sur votre modèle User
+        session(['isAdmin' => true]); // Mettre en session un indicateur pour l'administrateur
+    }
     }
 
     /**
