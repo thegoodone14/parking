@@ -26,6 +26,9 @@ class ReservationController extends Controller
                 // Récupérer l'utilisateur authentifié
             $user = Auth::user();
 
+            // Supprimer les réservations antérieures à la date actuelle
+        Reservation::where('Date_heure_expiration', '<', now())->delete();
+        
             // Récupérer les réservations de l'utilisateur
             $reservations = Reservation::where('ID_user', $user->id)->get();
 
