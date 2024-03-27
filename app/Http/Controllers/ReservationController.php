@@ -117,6 +117,8 @@ class ReservationController extends Controller
 
     // Logique pour obtenir les données de la liste d'attente
     public function waitlist() {
-    return view('reservations.waitlist', /*compact('data')*/);
+        $waitlistEntries = Waitlist::with('user')->orderBy('created_at', 'asc')->get();
+
+        return view('reservations.waitlist', compact('waitlistEntries'));
     }
 }
