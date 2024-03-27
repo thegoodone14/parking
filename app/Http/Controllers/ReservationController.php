@@ -39,6 +39,9 @@ class ReservationController extends Controller
             // Récupérer l'ID de l'utilisateur authentifié
         $userID = auth()->user()->id;
 
+        
+        
+        
         // Récupérer un ID_Place disponible
         $availablePlace = Place::whereNotExists(function ($query) {
             $query->select(DB::raw(1))
