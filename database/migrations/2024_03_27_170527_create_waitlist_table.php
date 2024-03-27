@@ -15,7 +15,10 @@ class CreateWaitlistTable extends Migration
     {
         Schema::create('waitlist', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('user_id'); // Référence à l'utilisateur
+            $table->timestamp('created_at')->useCurrent(); // Horodatage pour l'ordre de la liste d'attente
+
+            $table->foreign('user_id')->references('id')->on('users'); // Clé étrangère vers la table des utilisateurs
         });
     }
 
