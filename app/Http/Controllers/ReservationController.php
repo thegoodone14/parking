@@ -62,7 +62,7 @@ class ReservationController extends Controller
         $currentDateTime = now();
 
         // Calculer la date et l'heure d'expiration (1 jour à partir de maintenant)
-        $expirationDateTime = $currentDateTime->copy()->addMinutes(2);
+        $expirationDateTime = $currentDateTime->copy()->addMinutes(1);
 
         // Créer une nouvelle réservation avec l'ID de la place disponible
         $reservation = new Reservation();
