@@ -25,10 +25,12 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');*/
 
-Route::get('/menu_utilisateur', function () {
-    return view('menu_utilisateur');
-})->middleware(['auth'])->name('menu_utilisateur');
+
 require __DIR__.'/auth.php';
+Route::get('/menu_utilisateur', function () {
+    return view('menu_utilisateur')
+})->middleware(['auth'])->name('menu_utilisateur');
+
 
 Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::resource('places', PlaceController::class);
