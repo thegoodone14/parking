@@ -28,33 +28,19 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::resource('places', PlaceController::class);
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 
-    Route::get('/menu-administrateur',function (){
-        return 'admin';
-
-    });
-
-    Route::get('/menu-administrateur/utilisateurs',function (){
-        return view('liste_utilisateurs');
-
-    });
-
-    Route::get('/menu-administrateur/places',function (){
-        return View('les_places');
-
-    });
-
-    Route::get('/menu-administrateur/historique-place',function (){
-        return view('historique_des_places');
-
-    });
-
-    Route::get('/menu-administrateur/liste-attente-utilisateurs',function (){
-        return View('liste_d_attente');
-
-    });
-
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/admin/places', [AdminController::class, 'places'])->name('admin.places');
+    Route::get('/admin/places/history', [AdminController::class, 'placesHistory'])->name('admin.places.history');
+    Route::get('/admin/waitlist', [AdminController::class, 'waitlist'])->name('admin.waitlist');
 });
+
+   
+
+
 
    // Route::middleware(['auth'])->group(function () {
         
