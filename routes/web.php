@@ -21,14 +21,14 @@ Route::get('/', function () {
 });
 
 
-/*Route::get('/dashboard', function () {
+Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');*/
+})->middleware(['auth'])->name('dashboard');
 
 
 require __DIR__.'/auth.php';
 Route::get('/menu_utilisateur', function () {
-    return view('menu_utilisateur')
+    return view('menu_utilisateur');
 })->middleware(['auth'])->name('menu_utilisateur');
 
 

@@ -1,9 +1,8 @@
-@extends('layouts.app')
-
-@section('content')
+<DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <div class="container">
     <h1>Demande de Nouvelle Réservation</h1>
-    
+
     <!-- Formulaire de création de réservation -->
     <form action="{{ route('reservations.store') }}" method="POST">
         @csrf
@@ -17,8 +16,7 @@
             <input type="time" class="form-control" id="time" name="time">
         </div>
         <!-- Autres champs du formulaire -->
-        
         <button type="submit" class="btn btn-primary">Envoyer</button>
     </form>
 </div>
-@endsection
+</html>
