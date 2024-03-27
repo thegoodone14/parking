@@ -60,7 +60,7 @@ class ReservationController extends Controller
                     Waitlist::create(['user_id' => $userID]);
                 
                     // Rediriger vers la liste d'attente avec un message d'erreur
-                    return redirect()->route('reservations.waitlist')->with('error, Aucune place disponible. Vous avez été ajouté à la liste dattente.');
+                    return redirect()->route('waitlist');//->with('error, Aucune place disponible. Vous avez été ajouté à la liste dattente.');
                 }
                 
 
@@ -68,7 +68,7 @@ class ReservationController extends Controller
         $currentDateTime = now();
 
         // Calculer la date et l'heure d'expiration (1 jour à partir de maintenant)
-        $expirationDateTime = $currentDateTime->copy()->addMinutes(1);
+        $expirationDateTime = $currentDateTime->copy()->addMinutes(2);
 
         // Créer une nouvelle réservation avec l'ID de la place disponible
         $reservation = new Reservation();
@@ -125,6 +125,6 @@ class ReservationController extends Controller
     public function waitlist() {
         $waitlistEntries = Waitlist::with('user')->orderBy('created_at', 'asc')->get();
 
-        return view('reservations.waitlist', compact('waitlistEntries'));
+        return view('waitlist', compact('waitlistEntries'));
     }
 }
