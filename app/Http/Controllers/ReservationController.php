@@ -42,7 +42,8 @@ class ReservationController extends Controller
      {
             // Récupérer l'ID de l'utilisateur authentifié
         $userID = auth()->user()->id;
-
+       
+    
             // Supprimer les réservations antérieures à la date actuelle
         Reservation::where('Date_heure_expiration', '<', now())->delete();
             
@@ -54,10 +55,14 @@ class ReservationController extends Controller
                   ->orWhere('reservations.Date_heure_expiration', '<', now());
                 })->value('ID_Place');
 
-        if (!$availablePlace) {
-            // Aucune place disponible, rediriger vers la liste d'attente
-        return redirect()->route('waitlist')->with('error', 'Aucune place disponible pour effectuer la réservation.');
-        }
+                if (!$availablePlace) {
+                    // Ajouter l'utilisateur à la liste d'attente
+                    Waitlist::create(['user_id' => $userID]);
+                
+                    // Rediriger vers la liste d'attente avec un message d'erreur
+                    return redirect()->route('reservations.waitlist')->with('error, Aucune place disponible. Vous avez été ajouté à la liste dattente.');
+                }
+                
 
         // Calculer la date et l'heure actuelles
         $currentDateTime = now();
