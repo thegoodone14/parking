@@ -54,8 +54,8 @@ class ReservationController extends Controller
                 })->value('ID_Place');
 
         if (!$availablePlace) {
-            // Aucune place disponible
-            return ('error, Aucune place disponible pour effectuer la réservation.');
+            // Aucune place disponible, rediriger vers la liste d'attente
+        return redirect()->route('waitlist')->with('error', 'Aucune place disponible pour effectuer la réservation.');
         }
 
         // Calculer la date et l'heure actuelles
