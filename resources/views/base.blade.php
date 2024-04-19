@@ -16,19 +16,28 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Accueil</a>
-                </li>
+                </li> 
                 <li class="nav-item">
                     <a class="nav-link" href="/dashboard">Dashboard</a>
-                </li>
+                </li> -->
+                @if(auth()->check())
                 <li class="nav-item">
                     <a class="nav-link" href="/menu-utilisateur">Menu Utilisateur</a>
                 </li>
                 <!-- Le lien Menu Admin ne s'affiche que si l'utilisateur a un statut de '1' -->
-                @if(auth()->check() && auth()->user()->statut == 1)
+                @if(auth()->user()->statut == 1)
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/dashboard">Menu Admin</a>
+                    </li>
+                @endif
+                    <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Déconnexion</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Connexion</a>
                     </li>
                 @endif
             </ul>

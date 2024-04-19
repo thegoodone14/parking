@@ -8,6 +8,8 @@ use App\Models\Place;
 use App\Models\Waitlist;
 use App\Models\Reservation;
 
+
+
 class AdminController extends Controller
 {
     // Fonction pour afficher la liste des utilisateurs
