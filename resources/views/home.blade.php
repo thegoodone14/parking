@@ -54,7 +54,7 @@ echo '<body>';
 
 echo '<div class="navbar">';
 echo '    <a href="' . url('/') . '" class="text-sm text-gray-700 dark:text-gray-500 underline">Accueil</a>';
-echo '<a href="' . url('/dashboard') . '" class="text-sm text-gray-700 dark:text-gray-500 underline">Connexion</a>';
+echo '<a href="' . url('/welcome') . '" class="text-sm text-gray-700 dark:text-gray-500 underline">Connexion</a>';
 echo '</div>';
 
 echo '<div class="title">';

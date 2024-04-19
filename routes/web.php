@@ -27,7 +27,7 @@ Route::get('/dashboard', function () {
 
 
 require __DIR__.'/auth.php';
-Route::get('/menu_utilisateur', function () {
+Route::get('/menu-utilisateur', function () {
     return view('menu_utilisateur');
 })->middleware(['auth'])->name('menu_utilisateur');
 
