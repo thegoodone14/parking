@@ -40,17 +40,26 @@ class ReservationController extends Controller
      // Enregistrer une nouvelle réservation dans la base de données
      public function store(Request $request)
      {
-            // Récupérer l'ID de l'utilisateur authentifié
+         // Récupérer l'objet utilisateur authentifié
+        $user = auth()->user();
+    
+        
+        // Récupérer l'ID de l'utilisateur authentifié
         $userID = auth()->user()->id;
+
        
     
             // Supprimer les réservations antérieures à la date actuelle
         //Reservation::where('Date_heure_expiration', '<', now())->delete();
             
-        // Vérifier si l'utilisateur a déjà une réservation active
-        if ($user->reservations()->exists()) {
+        // Vérifier si l'utilisateur a déjà une réservation active dont la date d'expiration est dans le futur
+        $hasActiveReservation = $user->reservations()
+        ->where('Date_heure_expiration', '>', now())
+        ->exists();
+
+        if ($hasActiveReservation) {
             $errorMessage = 'Vous avez déjà une réservation active.';
-            return view('parking.error', compact('errorMessage'));
+            return redirect()->route('reservations.index')->with('error', 'Vous avez déjà une réservation active.');
         }
         else {
        
@@ -134,5 +143,14 @@ class ReservationController extends Controller
         $waitlistEntries = Waitlist::with('user')->orderBy('created_at', 'asc')->get();
 
         return view('waitlist', compact('waitlistEntries'));
+    }
+    // Logique pour obtenir l'historique des réservations
+    public function history()
+    {
+        $reservations = Reservation::with(['user', 'place'])
+                                   ->orderBy('created_at', 'desc')
+                                   ->paginate(10); // Paginer les résultats pour l'affichage
+
+        return view('admin.history', compact('reservations'));
     }
 }

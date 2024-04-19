@@ -1,23 +1,12 @@
 @extends('base')
 
 @section('content')
-<div class="container text-center">
+<div class="container">
     <h1 class="my-4">PARKING</h1>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <a href="{{ route('reservations.create') }}" class="btn btn-primary btn-lg btn-block">Demander une nouvelle réservation</a>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <a href="{{ route('reservations.index') }}" class="btn btn-primary btn-lg btn-block">Réservation en cours</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <a href="{{ route('waitlist') }}" class="btn btn-primary btn-lg btn-block">Liste d'attente</a>
-        </div>
+    <div class="list-group">
+            <a href="{{ route('reservations.create') }}" class="list-group-item list-group-item-action">Demander une nouvelle réservation</a>
+            <a href="{{ route('reservations.index') }}" class="list-group-item list-group-item-action">Réservation en cours</a>
+            <a href="{{ route('waitlist') }}" class="list-group-item list-group-item-action">Liste d'attente</a>
     </div>
 </div>
 @endsection

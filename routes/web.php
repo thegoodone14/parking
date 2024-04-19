@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\AdminController;
 
 
 /*
@@ -37,11 +38,19 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
-
-    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-    Route::get('/admin/places', [AdminController::class, 'places'])->name('admin.places');
-    Route::get('/admin/places/history', [AdminController::class, 'placesHistory'])->name('admin.places.history');
-    Route::get('/admin/waitlist', [AdminController::class, 'waitlist'])->name('admin.waitlist');
+});
+// Routes pour l'administration
+Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/places', [AdminController::class, 'places'])->name('admin.places');
+    Route::get('/history', [AdminController::class, 'History'])->name('admin.history');
+    Route::get('/waitlist', [AdminController::class, 'waitlist'])->name('admin.waitlist');
+    // Route pour le formulaire d'édition d'une place
+    Route::get('/places/edit', [AdminController::class, 'edit'])->name('admin.places.edit');
+    // Route pour supprimer une place
+    Route::delete('/places/{ID_Place}', [AdminController::class, 'destroyPlace'])->name('admin.places.destroy');
+    // Route pour supprimer une entrée de la liste d'attente
+    Route::delete('/waitlist/{id}', [AdminController::class, 'destroy'])->name('admin.waitlist.destroy');
 });
 
    
@@ -51,6 +60,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
    // Route::middleware(['auth'])->group(function () {
         
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+
 
         Route::resource('reservations', ReservationController::class);
         // Toutes les autres routes qui nécessitent une authentification

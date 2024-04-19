@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('base')
+
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -17,5 +18,5 @@
         </div>
     </div>
 </div>
-</html>
+@endsection
 

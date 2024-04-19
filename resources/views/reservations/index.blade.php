@@ -1,8 +1,14 @@
+@extends('base')
 
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@section('content')
     <div class="container">
         <h1>Réservations en cours</h1>
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @if ($reservations->isEmpty())
             <p>Aucune réservation en cours.</p>
         @else
@@ -26,4 +32,4 @@
             </table>
         @endif
     </div>
-</html>
+@endsection

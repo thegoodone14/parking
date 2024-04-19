@@ -1,13 +1,23 @@
-{{-- resources/views/reservations/waitlist.blade.php --}}
-<!DOCTYPE html>
-<html lang="en">
+@extends('base')
+
+@section('content')
 <div class="container">
     <h1>Liste d'Attente</h1>
-    <ul>
+    <table class="table">
+    <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom de l'Utilisateur</th>
+                <th>Date d'Ajout</th>
+            </tr>
+        </thead>
         @foreach ($waitlistEntries as $entry)
-            <li>{{ $entry->user->name }} - Ajouté le : {{ $entry->created_at }}</li>
+        <tr>
+                <td>{{ $entry->id }}</td>
+                <td>{{ $entry->user_id }}</td>
+                <td>{{ $entry->created_at}}</td>
+        </tr>
         @endforeach
-    </ul>
+</table>
 </div>
-</html>
-
+@endsection
