@@ -8,21 +8,39 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url('/') }}">Accueil</a></li>
-            <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ url('/menu-utilisateur') }}">Menu Utilisateur</a></li>
-            @if(auth()->check() && auth()->user()->statut == 1)
-                <li><a href="{{ url('/admin/dashboard') }}">Menu Admin</a></li>
-            @endif
-        </ul>
-    </nav>
-
-    <div>
-        @yield('content')
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/menu-utilisateur">Menu Utilisateur</a>
+                </li>
+                <!-- Le lien Menu Admin ne s'affiche que si l'utilisateur a un statut de '1' -->
+                @if(auth()->check() && auth()->user()->statut == 1)
+                    <li class="nav-item">
+                        <a class="nav-link" href="/menu-admin">Menu Admin</a>
+                    </li>
+                @endif
+            </ul>
+        </div>
     </div>
+</nav>
 
-    <script src="{{ asset('js/app.js') }}"></script>
+<div class="container">
+    @yield('content')
+</div>
+
+<!-- Inclure Bootstrap JS 
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>-->
 </body>
 </html>
