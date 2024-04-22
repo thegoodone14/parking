@@ -3,7 +3,11 @@
 
 @section('content')
 <h2>Gérer les Utilisateurs</h2>
-{{-- Tableau des utilisateurs --}}
+@if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 <table>
     <tr>
         <th>ID</th>
