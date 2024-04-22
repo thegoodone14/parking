@@ -17,8 +17,8 @@ class CreateHistoryTable extends Migration
             $table->id();
             $table->unsignedBigInteger('reservation_id');
             $table->foreign('reservation_id')->references('ID_reservation')->on('reservations')->onDelete('cascade');
-            $table->string('action');  // Par exemple, "created", "updated", "deleted"
-            $table->json('details');   // Détails de la réservation en JSON
+            $table->string('action');
+            $table->json('details');
             $table->timestamps();
         });
         

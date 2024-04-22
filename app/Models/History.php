@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class History extends Model
 {
-    use HasFactory;
-
+    protected $table = 'history'; 
     protected $fillable = ['reservation_id', 'action', 'details'];
+
+    public function reservation()
+    {
+        return $this->belongsTo(Reservation::class, 'reservation_id');
+    }
 }

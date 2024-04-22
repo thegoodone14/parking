@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'satut',
         'rang_attente',
+        'est_bloque',
     ];
 
     /**

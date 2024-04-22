@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\HistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/places', [AdminController::class, 'places'])->name('admin.places');
-    Route::get('/history', [AdminController::class, 'History'])->name('admin.history');
+    Route::get('/history', [HistoryController::class, 'index'])->name('admin.history');
     Route::get('/waitlist', [AdminController::class, 'waitlist'])->name('admin.waitlist');
     // Route pour le formulaire d'édition d'une place
     Route::get('/places/edit', [AdminController::class, 'edit'])->name('admin.places.edit');

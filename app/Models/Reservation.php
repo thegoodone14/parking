@@ -39,7 +39,7 @@ class Reservation extends Model
     {
         return $this->belongsTo(Place::class, 'ID_Place');
     }
-    protected static function booted()
+   protected static function booted()
     {
         static::created(function ($reservation) {
             History::create([
@@ -51,6 +51,14 @@ class Reservation extends Model
                     'ID_Place' => $reservation->ID_Place,
                     'ID_user' => $reservation->ID_user
                 ])
+            ]);
+        });
+        static::deleting(function ($reservation) {
+            // Ajouter une entrée dans l'historique avant de supprimer la réservation
+            History::create([
+                'reservation_id' => $reservation->ID_reservation,
+                'action' => 'deleted',
+                'details' => json_encode($reservation->attributesToArray()),
             ]);
         });
     }

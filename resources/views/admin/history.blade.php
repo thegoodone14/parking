@@ -7,25 +7,31 @@
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Utilisateur</th>
-                <th>Place</th>
-                <th>Date de Réservation</th>
-                <th>Date d'Expiration</th>
+                <th>ID</th>
+                <th>ID Réservation</th>
+                <th>Détails</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($reservations as $reservation)
+            @foreach ($histories as $history)
             <tr>
-                <td>{{ $reservation->ID_reservation }}</td>
-                <td>{{ $reservation->user->id ?? 'Utilisateur supprimé' }}</td>
-                <td>{{ $reservation->place->ID_Place ?? 'Place supprimée' }}</td>
-                <td>{{ $reservation->Date_heure_reservation ?? 'Date non disponible' }}</td>
-                <td>{{ $reservation->Date_heure_expiration }}</td>
+                <td>{{ $history->id }}</td>
+                <td>{{ $history->reservation_id }}</td>
+                <td>
+                    @php $details = json_decode($history->details, true); @endphp
+                    <ul>
+                    @foreach ($details as $key => $value)
+                    @if(in_array($key, ['Date_heure_reservation', 'Date_heure_expiration']))
+                        <li>{{ $key }}: {{ \Carbon\Carbon::parse($value)->format('d M Y, H:i:s') }}</li>
+                    @else
+                        <li>{{ $key }}: {{ $value }}</li>
+                    @endif
+                    @endforeach
+                    </ul>
+                </td>
             </tr>
             @endforeach
         </tbody>
     </table>
-    {{ $reservations->links() }} <!-- Pagination links -->
 </div>
 @endsection

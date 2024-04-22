@@ -43,7 +43,11 @@ class ReservationController extends Controller
          // Récupérer l'objet utilisateur authentifié
         $user = auth()->user();
     
-        
+         // Vérifier si l'utilisateur est bloqué
+        if ($user->est_bloque) {
+        return redirect()->route('reservations.index')->with('error', 'Votre compte est bloqué, vous ne pouvez pas effectuer de réservation.');
+        }
+
         // Récupérer l'ID de l'utilisateur authentifié
         $userID = auth()->user()->id;
 
@@ -85,7 +89,7 @@ class ReservationController extends Controller
         $currentDateTime = now();
 
         // Calculer la date et l'heure d'expiration (1 jour à partir de maintenant)
-        $expirationDateTime = $currentDateTime->copy()->addMinutes(2);
+        $expirationDateTime = $currentDateTime->copy()->addMinutes(1);
 
         // Créer une nouvelle réservation avec l'ID de la place disponible
         $reservation = new Reservation();
@@ -96,7 +100,7 @@ class ReservationController extends Controller
         $reservation->save();
 
         // Rediriger avec un message de succès
-        return ('success, Réservation ajoutée avec succès.');
+        return redirect()->route('reservations.index')->with('success', 'Réservation ajoutée avec succès.');
      }
      }
      // Afficher une réservation spécifique
