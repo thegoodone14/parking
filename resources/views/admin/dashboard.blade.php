@@ -1,6 +1,6 @@
-{{-- resources/views/admin/dashboard.blade.php --}}
-<!DOCTYPE html>
-<html lang="en">
+@extends('base')
+
+@section('content')
 <div class="container">
     <h1>Tableau de bord de l'Administrateur</h1>
     <div class="list-group">
@@ -10,4 +10,4 @@
         <a href="{{ route('admin.waitlist') }}" class="list-group-item list-group-item-action">Gérer la Liste d'Attente</a>
     </div>
 </div>
-</html>
+ @endsection
