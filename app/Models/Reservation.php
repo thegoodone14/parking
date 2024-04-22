@@ -39,4 +39,20 @@ class Reservation extends Model
     {
         return $this->belongsTo(Place::class, 'ID_Place');
     }
+    protected static function booted()
+    {
+        static::created(function ($reservation) {
+            History::create([
+                'reservation_id' => $reservation->ID_reservation,
+                'action' => 'created',
+                'details' => json_encode([
+                    'Date_heure_reservation' => $reservation->Date_heure_reservation,
+                    'Date_heure_expiration' => $reservation->Date_heure_expiration,
+                    'ID_Place' => $reservation->ID_Place,
+                    'ID_user' => $reservation->ID_user
+                ])
+            ]);
+        });
+    }
+
 }

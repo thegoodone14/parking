@@ -15,17 +15,20 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Numéro réservation</th>
+                        <th>Place</th>    
                         <th>Date et heure de réservation</th>
                         <th>Date et heure d'expiration</th>
-                        <th>Place</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($reservations as $reservation)
                         <tr>
+                            <td>{{ $reservation->ID_reservation }}</td>
+                            <td>{{ $reservation->place->Numero }}</td> <!-- Assurez-vous que la relation place est définie dans votre modèle Reservation -->
                             <td>{{ $reservation->Date_heure_reservation }}</td>
                             <td>{{ $reservation->Date_heure_expiration }}</td>
-                            <td>{{ $reservation->place->Numero }}</td> <!-- Assurez-vous que la relation place est définie dans votre modèle Reservation -->
                         </tr>
                     @endforeach
                 </tbody>
