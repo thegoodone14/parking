@@ -65,4 +65,18 @@ class AdminController extends Controller
     
             return redirect()->route('admin.places')->with('success', 'Place supprimée avec succès.');
         }
+        public function toggleBlock(Request $request, $id)
+        {
+        $user = User::findOrFail($id);
+        $user->est_bloque = !$user->est_bloque;
+        $user->save();
+        // Vérifie si l'utilisateur vient d'être bloqué
+        if ($user->est_bloque) {
+        // Annule toutes les réservations en cours pour cet utilisateur
+        $user->reservations()->where('Date_heure_expiration', '>', now())->delete();
+        }
+
+    return back()->with('success', $user->est_bloque ? 'Utilisateur bloqué avec succès.' : 'Utilisateur débloqué avec succès.');
+    }
+
 }

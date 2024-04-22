@@ -5,22 +5,28 @@
 <h2>Gérer les Utilisateurs</h2>
 {{-- Tableau des utilisateurs --}}
 <table>
-    {{-- En-têtes de colonne --}}
     <tr>
         <th>ID</th>
         <th>Nom</th>
         <th>Prénom</th>
         <th>Email</th>
-        {{-- Autres colonnes au besoin --}}
+        <th>Bloquer/Débloquer</th>
     </tr>
-    {{-- Lignes de données --}}
     @foreach ($users as $user)
     <tr>
         <td>{{ $user->id }}</td>
         <td>{{ $user->nom }}</td>
         <td>{{ $user->prenom }}</td>
         <td>{{ $user->email }}</td>
-        {{-- Autres données --}}
+        <td>
+            <form action="{{ route('admin.users.toggleBlock', $user->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn {{ $user->est_bloque ? 'btn-success' : 'btn-warning' }}">
+                    {{ $user->est_bloque ? 'Débloquer' : 'Bloquer' }}
+                </button>
+            </form>
+        </td>
     </tr>
     @endforeach
 </table>

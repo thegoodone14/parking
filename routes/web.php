@@ -42,7 +42,10 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 // Routes pour l'administration
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::patch('/admin/users/{user}/toggle-block', [AdminController::class, 'toggleBlock'])->name('admin.users.toggleBlock');
+    Route::get('/users/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
     Route::get('/places', [AdminController::class, 'places'])->name('admin.places');
+    Route::delete('/admin/destroy', [AdminController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/history', [HistoryController::class, 'index'])->name('admin.history');
     Route::get('/waitlist', [AdminController::class, 'waitlist'])->name('admin.waitlist');
     // Route pour le formulaire d'édition d'une place
@@ -57,14 +60,11 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
 
 
 
-   // Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
         
-    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-
-
         Route::resource('reservations', ReservationController::class);
-        // Toutes les autres routes qui nécessitent une authentification
+        Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+        Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
 
         route::get('/menu-utilisateur', function (){
             return View('menu_utilisateur');
@@ -86,7 +86,7 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
         route::get('/menu-utilisateur/parametre', function (){
             return View('parametre');
     });
-//});
+});
 
 
 //});
