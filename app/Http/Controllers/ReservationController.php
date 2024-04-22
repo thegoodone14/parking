@@ -28,7 +28,7 @@ class ReservationController extends Controller
             $user = Auth::user();
 
             // Supprimer les réservations antérieures à la date actuelle
-        Reservation::where('Date_heure_expiration', '<', now())->delete();
+        //Reservation::where('Date_heure_expiration', '<', now())->delete();
         
             // Récupérer les réservations de l'utilisateur
             $reservations = Reservation::where('ID_user', $user->id)->get();
@@ -45,8 +45,16 @@ class ReservationController extends Controller
        
     
             // Supprimer les réservations antérieures à la date actuelle
-        Reservation::where('Date_heure_expiration', '<', now())->delete();
+        //Reservation::where('Date_heure_expiration', '<', now())->delete();
             
+        // Vérifier si l'utilisateur a déjà une réservation active
+        if ($user->reservations()->exists()) {
+            $errorMessage = 'Vous avez déjà une réservation active.';
+            return view('parking.error', compact('errorMessage'));
+        }
+        else {
+       
+       
         // Récupérer un ID_Place disponible
         $availablePlace = Place::whereNotExists(function ($query) {
             $query->select(DB::raw(1))
@@ -59,7 +67,7 @@ class ReservationController extends Controller
                     // Ajouter l'utilisateur à la liste d'attente
                     Waitlist::create(['user_id' => $userID]);
                 
-                    // Rediriger vers la liste d'attente avec un message d'erreur
+                     // Rediriger vers la liste d'attente avec un message d'erreur
                     return redirect()->route('waitlist');//->with('error, Aucune place disponible. Vous avez été ajouté à la liste dattente.');
                 }
                 
@@ -81,7 +89,7 @@ class ReservationController extends Controller
         // Rediriger avec un message de succès
         return ('success, Réservation ajoutée avec succès.');
      }
-    
+     }
      // Afficher une réservation spécifique
     public function show($id)
     {
