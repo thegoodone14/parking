@@ -2,76 +2,93 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Place;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 class PlaceController extends Controller
 {
-    // Afficher la liste des places
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // Vérification du statut admin pour certaines routes
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->statut != 1) {
+                abort(403, 'Accès non autorisé.');
+            }
+            return $next($request);
+        })->only(['store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
-        $places = Place::all();
-        return view('places.index', compact('places'));
+        $places = Place::withCount(['reservations' => function ($query) {
+            $query->where('Date_heure_expiration', '>', now());
+        }])->get();
+        
+        return view('admin.places', compact('places'));
     }
 
-    // Afficher le formulaire de création d'une nouvelle place
-    public function create()
-    {
-        return view('places.create');
-    }
-
-    // Enregistrer une nouvelle place dans la base de données
     public function store(Request $request)
     {
-        // Valider les données du formulaire
-    $validatedData = $request->validate([
-        'user_id' => 'required|exists:users,id',
-    ]);
-
-    // Vérifier s'il existe une place disponible
-    $place = Place::first();
-
-    // Créer une nouvelle réservation si une place est disponible
-    if ($place) {
-        // Créer une nouvelle réservation avec l'ID de l'utilisateur et l'ID de la place
-        Reservation::create([
-            'user_id' => $validatedData['user_id'],
-            'place_id' => $place->id,
+        $request->validate([
+            'Numero' => 'required|string|unique:places,Numero',
         ]);
 
-        // Rediriger avec un message de succès
-        return redirect()->route('reservations.index')->with('success', 'Réservation effectuée avec succès.');
-    } else {
-        // Rediriger avec un message d'erreur
-        return redirect()->back()->with('error', 'Aucune place disponible pour effectuer la réservation.');
-    }
-    }
-    // Afficher le formulaire pour éditer une place existante
-    public function edit($id)
-    {
-        $place = Place::findOrFail($id);
-        return view('places.edit', compact('place'));
-    }
-
-    // Mettre à jour la place dans la base de données
-    public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'Numero' => 'required|max:255|unique:places,Numero,' . $id,
+        Place::create([
+            'Numero' => $request->Numero,
         ]);
 
-        $place = Place::findOrFail($id);
-        $place->update($validatedData);
-
-        return redirect()->route('places.index')->with('success', 'Place mise à jour avec succès.');
+        return redirect()->route('admin.places')->with('success', 'Place ajoutée avec succès.');
     }
 
-    // Supprimer la place de la base de données
+    public function edit(Place $place)
+    {
+        return view('admin.places.edit', compact('place'));
+    }
+
+    public function update(Request $request, Place $place)
+    {
+        $request->validate([
+            'Numero' => 'required|string|unique:places,Numero,' . $place->ID_Place . ',ID_Place',
+        ]);
+
+        $place->update([
+            'Numero' => $request->Numero,
+        ]);
+
+        return redirect()->route('admin.places')->with('success', 'Place mise à jour avec succès.');
+    }
+
     public function destroy($id)
     {
         $place = Place::findOrFail($id);
+        
+        // Vérifier si la place a des réservations actives
+        $hasActiveReservations = $place->reservations()
+            ->where('Date_heure_expiration', '>', now())
+            ->exists();
+
+        if ($hasActiveReservations) {
+            return redirect()->route('admin.places')
+                ->with('error', 'Impossible de supprimer une place avec des réservations actives.');
+        }
+
         $place->delete();
 
-        return redirect()->route('places.index')->with('success', 'Place supprimée avec succès.');
+        return redirect()->route('admin.places')
+            ->with('success', 'Place supprimée avec succès.');
     }
-    
+
+    // Récupérer les statistiques des places
+    public function getStats()
+    {
+        $stats = [
+            'total' => Place::count(),
+            'occupied' => Reservation::where('Date_heure_expiration', '>', now())->count(),
+            'available' => Place::count() - Reservation::where('Date_heure_expiration', '>', now())->count(),
+        ];
+
+        return response()->json($stats);
+    }
 }

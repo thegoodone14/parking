@@ -39,15 +39,15 @@ class AdminController extends Controller
         $waitlistEntries = Waitlist::with('user')->orderBy('created_at', 'asc')->get();
         return view('admin.waitlist', compact('waitlistEntries'));
     }
-        // Logique pour obtenir l'historique des réservations
-        public function history()
-        {
-            $reservations = Reservation::with(['user', 'place'])
-                                       ->orderBy('created_at', 'desc')
-                                       ->paginate(10); // Paginer les résultats pour l'affichage
-    
-            return view('admin.history', compact('reservations'));
-        }
+    // Logique pour obtenir l'historique des réservations
+    public function history()
+    {
+        $reservations = Reservation::with(['user', 'place'])
+                                    ->orderBy('created_at', 'desc')
+                                    ->paginate(10); // Paginer les résultats pour l'affichage
+
+        return view('admin.history', compact('reservations'));
+    }
     // Fonction pour supprimer un utilisateur de la liste d'attente 
     public function destroy($id)
     {
@@ -57,16 +57,9 @@ class AdminController extends Controller
 
         return redirect()->route('admin.waitlist')->with('success', 'Entrée supprimée avec succès de la liste d attente.');
     }
-        // Supprimer la place de la base de données
-        public function destroyPlace($id)
-        {
-            $place = Place::findOrFail($id);
-            $place->delete();
-    
-            return redirect()->route('admin.places')->with('success', 'Place supprimée avec succès.');
-        }
-        public function toggleBlock(Request $request, $id)
-        {
+
+    public function toggleBlock(Request $request, $id)
+    {
         $user = User::findOrFail($id);
         $user->est_bloque = !$user->est_bloque;
         $user->save();
@@ -77,6 +70,48 @@ class AdminController extends Controller
         }
 
     return back()->with('success', $user->est_bloque ? 'Utilisateur bloqué avec succès.' : 'Utilisateur débloqué avec succès.');
+    }
+
+    public function storePlace(Request $request)
+    {
+        $request->validate([
+            'Numero' => 'required|string|max:10|unique:places,Numero',
+        ]);
+
+        Place::create([
+            'Numero' => $request->Numero,
+        ]);
+
+        return redirect()->route('admin.places')
+            ->with('success', 'Place de parking créée avec succès');
+    }
+
+    public function updatePlace(Request $request, $id)
+    {
+        $request->validate([
+            'Numero' => 'required|string|max:10|unique:places,Numero,' . $id . ',ID_Place',
+        ]);
+
+        $place = Place::findOrFail($id);
+        $place->update([
+            'Numero' => $request->Numero,
+        ]);
+
+        return redirect()->route('admin.places')
+            ->with('success', 'Place de parking mise à jour avec succès');
+    }
+
+    public function destroyPlace($id)
+    {
+        try {
+            $place = Place::findOrFail($id);
+            $place->delete();
+            return redirect()->route('admin.places')
+                ->with('success', 'Place de parking supprimée avec succès');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.places')
+                ->with('error', 'Impossible de supprimer cette place');
+        }
     }
 
 }

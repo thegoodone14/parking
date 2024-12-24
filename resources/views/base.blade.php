@@ -4,52 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Application</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 76px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content {
+            flex: 1 0 auto;
+        }
+        .footer {
+            flex-shrink: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Accueil</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!-- <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Accueil</a>
-                </li> 
-                <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                </li> -->
-                @if(auth()->check())
-                <li class="nav-item">
-                    <a class="nav-link" href="/menu-utilisateur">Menu Utilisateur</a>
-                </li>
-                <!-- Le lien Menu Admin ne s'affiche que si l'utilisateur a un statut de '1' -->
-                @if(auth()->user()->statut == 1)
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/dashboard">Menu Admin</a>
-                    </li>
-                @endif
-                    <li class="nav-item">
-                            <a class="nav-link" href="/dashboard">Déconnexion</a>
-                    </li>
-                @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Connexion</a>
-                    </li>
-                @endif
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ route('home') }}">Accueil</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link{{ Request::is('dashboard') ? ' active' : '' }}" 
+                               href="{{ route('dashboard') }}">Menu Utilisateur</a>
+                        </li>
+                        @if(auth()->user()->statut == 1)
+                            <li class="nav-item">
+                                <a class="nav-link{{ Request::is('admin/dashboard') ? ' active' : '' }}" 
+                                   href="{{ route('admin.dashboard') }}">Menu Admin</a>
+                            </li>
+                        @endif
+                    @endauth
+                </ul>
+                
+                <ul class="navbar-nav">
+                    @auth
+                        <li class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="nav-link btn btn-link">Déconnexion</button>
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link{{ Request::is('login') ? ' active' : '' }}" 
+                               href="{{ route('login') }}">Connexion</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{{ Request::is('register') ? ' active' : '' }}" 
+                               href="{{ route('register') }}">Inscription</a>
+                        </li>
+                    @endauth
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="container">
-    @yield('content')
-</div>
+    <main class="main-content py-4">
+        @yield('content')
+    </main>
 
-<!-- Inclure Bootstrap JS 
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>-->
+    <footer class="footer bg-light py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">&copy; {{ date('Y') }} Mon Application. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

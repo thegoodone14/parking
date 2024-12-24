@@ -10,83 +10,65 @@ use App\Http\Controllers\HistoryController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::get('/', function () {
     return view('home');
-});
-
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-
 require __DIR__.'/auth.php';
-Route::get('/menu-utilisateur', function () {
-    return view('menu_utilisateur');
-})->middleware(['auth'])->name('menu_utilisateur');
 
+// Routes pour les utilisateurs connectés
+Route::middleware(['auth'])->group(function () {
+    Route::get('/menu-utilisateur', function () {
+        return view('menu_utilisateur');
+    })->name('menu_utilisateur');
 
+    Route::resource('reservations', ReservationController::class);
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+
+    Route::get('/menu-utilisateur/reservation-en-cours', function () {
+        return view('reservation_en_cours');
+    })->name('reservation.en.cours');
+
+    Route::get('/menu-utilisateur/nouvelle-reservation', function () {
+        return view('nouvelle_reservation');
+    })->name('nouvelle.reservation');
+
+    Route::get('/waitlist', [ReservationController::class, 'waitlist'])->name('waitlist');
+    Route::get('/reservations/waitlist', [ReservationController::class, 'waitlist'])->name('reservations.waitlist');
+
+    Route::get('/menu-utilisateur/parametre', function () {
+        return view('parametre');
+    })->name('parametre');
+});
+
+// Routes pour l'administration
 Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::resource('places', PlaceController::class);
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-});
-// Routes pour l'administration
-Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
-    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
-    Route::patch('/admin/users/{user}/toggle-block', [AdminController::class, 'toggleBlock'])->name('admin.users.toggleBlock');
-    Route::get('/users/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
-    Route::get('/places', [AdminController::class, 'places'])->name('admin.places');
-    Route::delete('/admin/destroy', [AdminController::class, 'destroy'])->name('admin.users.destroy');
-    Route::get('/history', [HistoryController::class, 'index'])->name('admin.history');
-    Route::get('/waitlist', [AdminController::class, 'waitlist'])->name('admin.waitlist');
-    // Route pour le formulaire d'édition d'une place
-    Route::get('/places/edit', [AdminController::class, 'edit'])->name('admin.places.edit');
-    // Route pour supprimer une place
-    Route::delete('/places/{ID_Place}', [AdminController::class, 'destroyPlace'])->name('admin.places.destroy');
-    // Route pour supprimer une entrée de la liste d'attente
-    Route::delete('/waitlist/{id}', [AdminController::class, 'destroy'])->name('admin.waitlist.destroy');
-});
-
-   
-
-
-
-    Route::middleware(['auth'])->group(function () {
+    
+    Route::prefix('admin')->group(function () {
+        // Places
+        Route::post('/places', [AdminController::class, 'storePlace'])->name('admin.places.store');
+        Route::put('/places/{id}', [AdminController::class, 'updatePlace'])->name('admin.places.update');
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
         
-        Route::resource('reservations', ReservationController::class);
-        Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-        Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
-
-        route::get('/menu-utilisateur', function (){
-            return View('menu_utilisateur');
-        });
-
-        route::get('/menu-utilisateur/reservation-en-cours', function (){
-            return View('reservation_en_cours');
-
-        });
-
-        route::get('/menu-utilisateur/nouvelle-reservation', function (){
-            return View('nouvelle_reservation');
-        });
-
-        Route::get('/waitlist', [ReservationController::class, 'waitlist'])->name('waitlist');
-        Route::get('/reservations/waitlist', [ReservationController::class, 'waitlist'])->name('reservations.waitlist');
-
-
-        route::get('/menu-utilisateur/parametre', function (){
-            return View('parametre');
+        Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+        Route::patch('/users/{user}/toggle-block', [AdminController::class, 'toggleBlock'])->name('admin.users.toggleBlock');
+        Route::get('/users/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
+        Route::get('/places', [AdminController::class, 'places'])->name('admin.places');
+        Route::delete('/destroy', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+        Route::get('/history', [HistoryController::class, 'index'])->name('admin.history');
+        Route::get('/waitlist', [AdminController::class, 'waitlist'])->name('admin.waitlist');
+        Route::get('/places/edit', [AdminController::class, 'edit'])->name('admin.places.edit');
+        Route::delete('/places/{ID_Place}', [AdminController::class, 'destroyPlace'])->name('admin.places.destroy');
+        Route::delete('/waitlist/{id}', [AdminController::class, 'destroy'])->name('admin.waitlist.destroy');
     });
 });
-
-
-//});

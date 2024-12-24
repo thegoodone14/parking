@@ -1,75 +1,71 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('base')
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">Inscription</h4>
+                </div>
+                <div class="card-body p-4">
+                    @if ($errors->any())
+                        <div class="alert alert-danger mb-4">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
 
-           <!-- Champ Prénom -->
-            <div class="mb-3">
-                <label for="prenom" class="form-label">{{ __('Prénom') }}</label>
-                <input id="prenom" type="text" class="form-control @error('prenom') is-invalid @enderror" name="prenom" value="{{ old('prenom') }}" required autocomplete="prenom" autofocus>
-                @error('prenom')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="prenom" class="form-label">Prénom</label>
+                                <input type="text" class="form-control @error('prenom') is-invalid @enderror" 
+                                       id="prenom" name="prenom" value="{{ old('prenom') }}" required autofocus>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="nom" class="form-label">Nom</label>
+                                <input type="text" class="form-control @error('nom') is-invalid @enderror" 
+                                       id="nom" name="nom" value="{{ old('nom') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                   id="email" name="email" value="{{ old('email') }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                   id="password" name="password" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
+                            <input type="password" class="form-control" 
+                                   id="password_confirmation" name="password_confirmation" required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">S'inscrire</button>
+                        </div>
+
+                        <div class="mt-3 text-center">
+                            <span>Déjà inscrit ?</span>
+                            <a href="{{ route('login') }}" class="text-decoration-none ms-1">Se connecter</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <!-- Champ Nom -->
-            <div class="mb-3">
-                <label for="nom" class="form-label">{{ __('Nom') }}</label>
-                <input id="nom" type="text" class="form-control @error('nom') is-invalid @enderror" name="nom" value="{{ old('nom') }}" required autocomplete="nom">
-                @error('nom')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-
-
-            <!-- Email Address -->
-            <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
-            </div>
-
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password" />
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+        </div>
+    </div>
+</div>
+@endsection

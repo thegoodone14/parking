@@ -76,12 +76,14 @@ class ReservationController extends Controller
                   ->orWhere('reservations.Date_heure_expiration', '<', now());
                 })->value('ID_Place');
 
+                // Ajouter un système de notification quand une place se libère
                 if (!$availablePlace) {
-                    // Ajouter l'utilisateur à la liste d'attente
-                    Waitlist::create(['user_id' => $userID]);
-                
-                     // Rediriger vers la liste d'attente avec un message d'erreur
-                    return redirect()->route('waitlist');//->with('error, Aucune place disponible. Vous avez été ajouté à la liste dattente.');
+                    $waitlistEntry = Waitlist::create([
+                        'user_id' => $userID,
+                        'rang' => Waitlist::count() + 1 // Ajouter le rang automatiquement
+                    ]);
+                    // Envoyer une notification à l'utilisateur avec son rang
+                    return redirect()->route('waitlist');
                 }
                 
 
