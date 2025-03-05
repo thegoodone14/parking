@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -12,42 +11,32 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'prenom',
         'nom',
         'email',
         'password',
-        'satut',
+        'statut',  // Corrigé la typo 'satut'
         'rang_attente',
         'est_bloque',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
-    
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class, 'ID_user');
-    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'id_user');
+    }
+
+    public function waitlistEntries()
+    {
+        return $this->hasMany(Waitlist::class, 'user_id');
+    }
 }

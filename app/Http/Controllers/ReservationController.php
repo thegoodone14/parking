@@ -72,9 +72,9 @@ class ReservationController extends Controller
         $availablePlace = Place::whereNotExists(function ($query) {
             $query->select(DB::raw(1))
                   ->from('reservations')
-                  ->whereColumn('reservations.ID_Place', 'places.ID_Place')
-                  ->orWhere('reservations.Date_heure_expiration', '<', now());
-                })->value('ID_Place');
+                  ->whereColumn('reservations.id_place', 'places.id_place') // Changé
+                  ->orWhere('reservations.date_heure_expiration', '<', now()); // Changé
+        })->value('id_place'); // Changé
 
                 // Ajouter un système de notification quand une place se libère
                 if (!$availablePlace) {
@@ -95,10 +95,10 @@ class ReservationController extends Controller
 
         // Créer une nouvelle réservation avec l'ID de la place disponible
         $reservation = new Reservation();
-        $reservation->Date_heure_reservation = $currentDateTime;
-        $reservation->Date_heure_expiration = $expirationDateTime;
-        $reservation->ID_user = $userID;
-        $reservation->ID_Place = $availablePlace;
+        $reservation->date_heure_reservation = $currentDateTime; // Changé
+        $reservation->date_heure_expiration = $expirationDateTime; // Changé
+        $reservation->id_user = $userID; // Changé
+        $reservation->id_place = $availablePlace; // Changé
         $reservation->save();
 
         // Rediriger avec un message de succès
@@ -124,9 +124,9 @@ class ReservationController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'Date_heure_reservation' => 'required|date',
-            'Date_heure_expiration' => 'required|date|after:Date_heure_reservation',
-            'ID_Place' => 'required|exists:places,ID_Place',
+            'date_heure_reservation' => 'required|date', // Changé
+            'date_heure_expiration' => 'required|date|after:date_heure_reservation', // Changé
+            'id_place' => 'required|exists:places,id_place', // Changé
         ]);
 
         $reservation = Reservation::findOrFail($id);

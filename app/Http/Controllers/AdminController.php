@@ -63,25 +63,22 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
         $user->est_bloque = !$user->est_bloque;
         $user->save();
-        // Vérifie si l'utilisateur vient d'être bloqué
         if ($user->est_bloque) {
-        // Annule toutes les réservations en cours pour cet utilisateur
-        $user->reservations()->where('Date_heure_expiration', '>', now())->delete();
+            // Changé en minuscules
+            $user->reservations()->where('date_heure_expiration', '>', now())->delete();
         }
-
-    return back()->with('success', $user->est_bloque ? 'Utilisateur bloqué avec succès.' : 'Utilisateur débloqué avec succès.');
+        return back()->with('success', $user->est_bloque ? 'Utilisateur bloqué avec succès.' : 'Utilisateur débloqué avec succès.');
     }
 
     public function storePlace(Request $request)
     {
         $request->validate([
-            'Numero' => 'required|string|max:10|unique:places,Numero',
+            'numero' => 'required|string|max:10|unique:places,numero', // Changé
         ]);
 
         Place::create([
-            'Numero' => $request->Numero,
+            'numero' => $request->numero, // Changé
         ]);
-
         return redirect()->route('admin.places')
             ->with('success', 'Place de parking créée avec succès');
     }
@@ -89,14 +86,13 @@ class AdminController extends Controller
     public function updatePlace(Request $request, $id)
     {
         $request->validate([
-            'Numero' => 'required|string|max:10|unique:places,Numero,' . $id . ',ID_Place',
+            'numero' => 'required|string|max:10|unique:places,numero,' . $id . ',id_place', // Changé
         ]);
 
         $place = Place::findOrFail($id);
         $place->update([
-            'Numero' => $request->Numero,
+            'numero' => $request->numero, // Changé
         ]);
-
         return redirect()->route('admin.places')
             ->with('success', 'Place de parking mise à jour avec succès');
     }

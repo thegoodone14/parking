@@ -24,9 +24,8 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::withCount(['reservations' => function ($query) {
-            $query->where('Date_heure_expiration', '>', now());
+            $query->where('date_heure_expiration', '>', now()); // Changé
         }])->get();
-        
         return view('admin.users', compact('users'));
     }
 

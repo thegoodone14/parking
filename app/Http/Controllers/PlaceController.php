@@ -23,7 +23,7 @@ class PlaceController extends Controller
     public function index()
     {
         $places = Place::withCount(['reservations' => function ($query) {
-            $query->where('Date_heure_expiration', '>', now());
+            $query->where('date_heure_expiration', '>', now()); // Changé
         }])->get();
         
         return view('admin.places', compact('places'));
@@ -32,13 +32,12 @@ class PlaceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'Numero' => 'required|string|unique:places,Numero',
+            'numero' => 'required|string|unique:places,numero', // Changé
         ]);
 
         Place::create([
-            'Numero' => $request->Numero,
+            'numero' => $request->numero, // Changé
         ]);
-
         return redirect()->route('admin.places')->with('success', 'Place ajoutée avec succès.');
     }
 
@@ -50,13 +49,12 @@ class PlaceController extends Controller
     public function update(Request $request, Place $place)
     {
         $request->validate([
-            'Numero' => 'required|string|unique:places,Numero,' . $place->ID_Place . ',ID_Place',
+            'numero' => 'required|string|unique:places,numero,' . $place->id_place . ',id_place', // Changé
         ]);
 
         $place->update([
-            'Numero' => $request->Numero,
+            'numero' => $request->numero, // Changé
         ]);
-
         return redirect()->route('admin.places')->with('success', 'Place mise à jour avec succès.');
     }
 
@@ -82,13 +80,13 @@ class PlaceController extends Controller
 
     // Récupérer les statistiques des places
     public function getStats()
-    {
-        $stats = [
-            'total' => Place::count(),
-            'occupied' => Reservation::where('Date_heure_expiration', '>', now())->count(),
-            'available' => Place::count() - Reservation::where('Date_heure_expiration', '>', now())->count(),
-        ];
+        {
+            $stats = [
+                'total' => Place::count(),
+                'occupied' => Reservation::where('Date_heure_expiration', '>', now())->count(),
+                'available' => Place::count() - Reservation::where('Date_heure_expiration', '>', now())->count(),
+            ];
 
-        return response()->json($stats);
-    }
+            return response()->json($stats);
+        }
 }

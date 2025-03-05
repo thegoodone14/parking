@@ -14,11 +14,13 @@ class CreateReservationsTable extends Migration
     public function up()
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->id('ID_reservation');
-            $table->dateTime('Date_heure_reservation');
-            $table->dateTime('Date_heure_expiration');
-            $table->foreignId('ID_Place')->constrained('places', 'ID_Place'); // Assurez-vous que la clé étrangère correspond au nom et type de votre clé primaire de la table `places`
-            $table->foreignId('ID_user')->constrained('users'); // Assurez-vous que la clé étrangère correspond au nom et type de votre clé primaire de la table `users`
+            $table->id('id_reservation'); // Changé en minuscules
+            $table->dateTime('date_heure_reservation'); // Changé en minuscules
+            $table->dateTime('date_heure_expiration'); // Changé en minuscules
+            $table->foreignId('id_place') // Changé en minuscules
+                ->constrained('places', 'id_place');
+            $table->foreignId('id_user') // Changé en minuscules
+                ->constrained('users');
             $table->timestamps();
         });
     }

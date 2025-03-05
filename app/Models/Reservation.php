@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,57 +9,50 @@ class Reservation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'ID_reservation',
-        'Date_heure_reservation',
-        'Date_heure_expiration',
-        'ID_Place',
-        'ID_user',
+        'id_reservation',
+        'date_heure_reservation',
+        'date_heure_expiration',
+        'id_place',
+        'id_user',
         'created_at',
         'updated_at',
     ];
 
-    // Définition de la table si elle n'utilise pas le nom par défaut
     protected $table = 'reservations';
-
-    // Désactivation des timestamps si vous ne les utilisez pas
     public $timestamps = false;
+    protected $primaryKey = 'id_reservation';
 
-    // La clé primaire si elle n'est pas 'id'
-    protected $primaryKey = 'ID_reservation';
-
-    // Définition de la relation avec la table users
     public function user()
     {
-        return $this->belongsTo(User::class, 'ID_user');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
-    // Définition de la relation avec la table places
     public function place()
     {
-        return $this->belongsTo(Place::class, 'ID_Place');
+        return $this->belongsTo(Place::class, 'id_place');
     }
-   protected static function booted()
+
+    protected static function booted()
     {
         static::created(function ($reservation) {
             History::create([
-                'reservation_id' => $reservation->ID_reservation,
+                'reservation_id' => $reservation->id_reservation,
                 'action' => 'created',
                 'details' => json_encode([
-                    'Date_heure_reservation' => $reservation->Date_heure_reservation,
-                    'Date_heure_expiration' => $reservation->Date_heure_expiration,
-                    'ID_Place' => $reservation->ID_Place,
-                    'ID_user' => $reservation->ID_user
+                    'date_heure_reservation' => $reservation->date_heure_reservation,
+                    'date_heure_expiration' => $reservation->date_heure_expiration,
+                    'id_place' => $reservation->id_place,
+                    'id_user' => $reservation->id_user
                 ])
             ]);
         });
+
         static::deleting(function ($reservation) {
-            // Ajouter une entrée dans l'historique avant de supprimer la réservation
             History::create([
-                'reservation_id' => $reservation->ID_reservation,
+                'reservation_id' => $reservation->id_reservation,
                 'action' => 'deleted',
                 'details' => json_encode($reservation->attributesToArray()),
             ]);
         });
     }
-
 }
